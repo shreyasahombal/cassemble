@@ -18,14 +18,22 @@ session_start();
     if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
     ?>
         <h1>Signed In</h1>
+        <form action="backend/signout.bkd.php" method="POST">
+            <button type="submit" name="submit-signout">Sign Out</button>
+        </form>
     <?php
     } else {
     ?>
         <h5>Not Signed In</h5>
         <h3>Get Started As:</h3>
-        <button><a href="authentication/signUpStudent.php">Student</a></button>
-        <button>College</button>
-        <button>Company</button>
+        <button><a href="auth/signUpStudent.php">Student</a></button>
+        <button><a href="auth/signUpCollege.php">College</a></button>
+        <button><a href="auth/signUpCompany.php">Company</a></button>
+        <br><br><br>
+        <h3>Sign In As:</h3>
+        <button><a href="auth/signInStudent.php">Student</a></button>
+        <button><a href="auth/signInCollege.php">College</a></button>
+        <button><a href="auth/signInCompany.php">Company</a></button>
     <?php
     }
 
