@@ -1,4 +1,5 @@
 <?php
+require 'backend/db.php';
 session_start();
 $studentID = $collegeID = $companyID = '';
 if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
@@ -56,40 +57,57 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
         </div>
     </nav>
     <?php
-    if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
-    ?>
-        <div class="grid grid-cols-1 gap-6 my-6 px-4">
-            <div class="max-w-xl mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
-                <div class="flex flex-row items-center">
-                    <img class="rounded-full h-10 w-10" src="https://images.unsplash.com/photo-1520065786657-b71a007dd8a5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=80" />
-                    <div class="ml-5">
-                        <p class=" text-black font-bold">Shreyas A Hombal</p>
-                        <p class=" text-black font-normal text-xs">CSE . 3rd . AMC Engineering College . Bengaluru</p>
-                    </div>
-                    <div class="ml-auto">
-                        <p class="mb-5 text-black font-light text-xs">2h</p>
-                    </div>
-                </div>
-                <div class="my-5 mx-5 font-medium">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, ratione dicta deleniti, quas distinctio, veniam quo rem eveniet aliquid repudiandae fuga asperiores reiciendis tenetur? Eius quidem impedit et soluta accusamus.
-                </div>
-            </div>
+    if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) { ?>
 
-            <div class="max-w-xl mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
-                <div class="uppercase text-l font-bold text-center">
-                    Create a Slate
-                </div>
-                <form action="backend/addSlate.bkd.php" method="POST">
-                    <input type="hidden" name="studentID" value="<?php echo htmlspecialchars($studentID); ?>">
-                    <input type="hidden" name="collegeID" value="<?php echo htmlspecialchars($collegeID); ?>">
-                    <input type="hidden" name="companyID" value="<?php echo htmlspecialchars($companyID); ?>">
-                    <div class="border-gray-900 mr-20">
-                        <textarea class="bg-gray-100" name="content" id="content" cols="73" rows="3"></textarea>
-                    </div>
-                    <button type="submit" name="submit-slate" class="w-full font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">Done</button>
-                </form>
+        <div class="max-w-xl mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
+            <div class="uppercase text-l font-bold text-center">
+                Create a Slate
             </div>
+            <form action="backend/addSlate.bkd.php" method="POST">
+                <input type="hidden" name="studentID" value="<?php echo htmlspecialchars($studentID); ?>">
+                <input type="hidden" name="collegeID" value="<?php echo htmlspecialchars($collegeID); ?>">
+                <input type="hidden" name="companyID" value="<?php echo htmlspecialchars($companyID); ?>">
+                <div class="border-gray-900 mr-20">
+                    <textarea class="bg-gray-100" name="content" id="content" cols="73" rows="3"></textarea>
+                </div>
+                <button type="submit" name="submit-slate" class="w-full font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">Done</button>
+            </form>
         </div>
+        <?php
+        $slatesQuery = mysqli_query($conn, "SELECT * FROM slate");
+
+        while ($slatesArr = mysqli_fetch_array($slatesQuery)) {
+            $studentID = $slatesArr['studentID'];
+            $collegeID = $slatesArr['collegeID'];
+            $companyID = $slatesArr['companyID'];
+            if ($studentID !== NULL || $studentID !== '') {
+                $studentQuery = mysqli_query($conn, "SELECT student.name as studentName, student.streamYear, college.name as collegeName, stream.acronym, city.name as cityName FROM student, college, stream, city WHERE student.studentID = $studentID AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
+
+                while ($studentArr = mysqli_fetch_array($studentQuery)) {
+                    echo $studentArr['studentName'];
+        ?>
+
+                    <div class="max-w-xl mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
+                        <div class="flex flex-row items-center">
+                            <img class="rounded-full h-10 w-10" src="https://images.unsplash.com/photo-1520065786657-b71a007dd8a5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=80" />
+                            <div class="ml-5">
+                                <p class=" text-black font-bold"><?= $studentArr['studentName'] ?></p>
+                                <p class=" text-black font-normal text-xs"><?= $studentArr['acronym'] ?> . <?= $studentArr['streamYear'] ?> . <?= $studentArr['collegeName'] ?> . <?= $studentArr['cityName'] ?></p>
+                            </div>
+                            <div class="ml-auto">
+                                <p class="mb-5 text-black font-light text-xs">2h</p>
+                            </div>
+                        </div>
+                        <div class="my-5 mx-5 font-medium">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, ratione dicta deleniti, quas distinctio, veniam quo rem eveniet aliquid repudiandae fuga asperiores reiciendis tenetur? Eius quidem impedit et soluta accusamus.
+                        </div>
+                    </div>
+        <?php
+                }
+            }
+        }
+
+        ?>
     <?php } else {
     ?>
         <h5>Not Signed In</h5>
