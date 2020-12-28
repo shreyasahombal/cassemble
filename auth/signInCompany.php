@@ -25,16 +25,16 @@ session_start();
                 <br><br>
                 <h1 class="text-center text-9xl font-black">Sign In</h1>
                 <br><br>
-            <form class="submit-signin-company mt-6" action="../backend/signin.bkd.php" method="POST">
-                <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
-                <input id="email" type="email" name="email" placeholder="first.rank.raju@some-domain.com" autocomplete="email" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-                <label for="password" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Password</label>
-                <input id="password" type="password" name="password" placeholder="********" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-                <button type="submit-signin-company" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
-                    Sign In
-                </button>
-                <p class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">Forgot Password?</p>
-            </form>
+                <form class="submit-signin-company mt-6" action="../backend/signin.bkd.php" method="POST">
+                    <label for="emailID" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
+                    <input id="emailID" type="email" name="emailID" placeholder="first.rank.raju@some-domain.com" autocomplete="email" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+                    <label for="password" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Password</label>
+                    <input id="password" type="password" name="password" placeholder="********" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+                    <button type="submit" name="submit-signin-company" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+                        Sign In
+                    </button>
+                    <p class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">Forgot Password?</p>
+                </form>
             </div>
         </div>
     <?php

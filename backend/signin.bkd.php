@@ -25,12 +25,27 @@ if (isset($_POST['submit-signin-student'])) {
                     exit();
                 } else if ($passwordCheck == true) {
                     session_start(); //put this on all pages...
-                    $_SESSION['signedIn'] = true;
                     $_SESSION['userType'] = 'student';
+                    $_SESSION['userEmailID'] = $emailID;
                     $_SESSION['userID'] = $row['studentID'];
 
-                    header("Location: ../index.php?login=success");
-                    exit();
+
+                    //check for createdProfile?
+                    $createdProfileQuery = mysqli_query($conn, "SELECT name, streamID, collegeID, streamYear FROM student WHERE studentID = ".$row['studentID'].";");
+
+                    while ($createdProfileArr = mysqli_fetch_array($createdProfileQuery)) {
+                        echo 'Hello';
+                        if ($createdProfileArr['name'] == NULL && $createdProfileArr['streamID'] == NULL && $createdProfileArr['collegeID'] == NULL && $createdProfileArr['streamYear'] == NULL) {
+                            header("Location: ../profile/createStudentProfile.php?notify=completeprofile");
+                            exit();
+                        } else {
+                            $_SESSION['signedIn'] = true;
+                            header("Location: ../index.php?signin=success");
+                            exit();
+                        }
+                    }
+
+
                 } else {
                     header("Location: ../auth/signInStudent.php?error=sqlerror");
                     exit();
@@ -67,12 +82,24 @@ if (isset($_POST['submit-signin-student'])) {
                     exit();
                 } else if ($passwordCheck == true) {
                     session_start(); //put this on all pages...
-                    $_SESSION['signedIn'] = true;
                     $_SESSION['userType'] = 'college';
+                    $_SESSION['userEmailID'] = $emailID;
                     $_SESSION['userID'] = $row['collegeID'];
 
-                    header("Location: ../index.php?login=success");
-                    exit();
+
+                    //check for createdProfile?
+                    $createdProfileQuery = mysqli_query($conn, "SELECT name, cityID, stateID, websiteURL, logoURL, bannerURL FROM college WHERE collegeID = ".$row['collegeID'].";");
+
+                    while ($createdProfileArr = mysqli_fetch_array($createdProfileQuery)) {
+                        if ($createdProfileArr['name'] == NULL && $createdProfileArr['cityID'] == NULL && $createdProfileArr['stateID'] == NULL && $createdProfileArr['websiteURL'] == NULL && $createdProfileArr['logoURL'] == NULL && $createdProfileArr['bannerURL'] == NULL) {
+                            header("Location: ../profile/createCollegeProfile.php?notify=completeprofile");
+                            exit();
+                        } else {
+                            $_SESSION['signedIn'] = true;
+                            header("Location: ../index.php?signin=success");
+                            exit();
+                        }
+                    }
                 } else {
                     header("Location: ../auth/signInCollege.php?error=sqlerror");
                     exit();
@@ -109,12 +136,24 @@ if (isset($_POST['submit-signin-student'])) {
                     exit();
                 } else if ($passwordCheck == true) {
                     session_start(); //put this on all pages...
-                    $_SESSION['signedIn'] = true;
                     $_SESSION['userType'] = 'company';
+                    $_SESSION['userEmailID'] = $emailID;
                     $_SESSION['userID'] = $row['companyID'];
 
-                    header("Location: ../index.php?login=success");
-                    exit();
+
+                    //check for createdProfile?
+                    $createdProfileQuery = mysqli_query($conn, "SELECT name, websiteURL, logoURL FROM company WHERE companyID = ".$row['companyID'].";");
+
+                    while ($createdProfileArr = mysqli_fetch_array($createdProfileQuery)) {
+                        if ($createdProfileArr['name'] == NULL && $createdProfileArr['websiteURL'] == NULL && $createdProfileArr['logoURL'] == NULL) {
+                            header("Location: ../profile/createCompanyProfile.php?notify=completeprofile");
+                            exit();
+                        } else {
+                            $_SESSION['signedIn'] = true;
+                            header("Location: ../index.php?signin=success");
+                            exit();
+                        }
+                    }
                 } else {
                     header("Location: ../auth/signInCompany.php?error=sqlerror");
                     exit();

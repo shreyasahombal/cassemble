@@ -2,7 +2,6 @@
 require '../backend/db.php';
 session_start();
 $emailID = $_SESSION['userEmailID'];
-echo $emailID;
 $sql = "SELECT studentID FROM student WHERE emailID=?";
 $stmt = mysqli_stmt_init($conn); //initialized the connection
 if (!mysqli_stmt_prepare($stmt, $sql)) { //checking if connection is perfect
@@ -90,15 +89,15 @@ if (!mysqli_stmt_prepare($stmt, $sql)) { //checking if connection is perfect
                     ?>
                 </select>
                 <label for="websiteURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Website URL</label>
-                <input id="websiteURL" type="url" name="websiteURL" placeholder="www.my-name.dev" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
-                <label for="imageURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Logo URL</label>
-                <input id="imageURL" type="url" name="imageURL" placeholder="http://" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-                <label for="resumeURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Banner URL</label>
-                <input id="resumeURL" type="url" name="resumeURL" placeholder="somecollege.edu.in" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+                <input id="websiteURL" type="url" name="websiteURL" placeholder="www.my-name.dev" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+                <label for="imageURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Profile Image URL</label>
+                <input id="imageURL" type="url" name="imageURL" placeholder="http://" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+                <label for="resumeURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Resume URL</label>
+                <input id="resumeURL" type="url" name="resumeURL" placeholder="http://" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
                 <button type="submit" name="submit-create-student-profile" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
                     Done
                 </button>
-                <p class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">Forgot Password?</p>
+                <p class="flex justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">Sign Out?</p>
         </div>
     </div>
     <script>

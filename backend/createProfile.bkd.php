@@ -23,7 +23,7 @@ if (isset($_POST['submit-create-student-profile'])) {
             header("Location: ../profile/createStudentProfile.php?error=sqlerror");
             exit();
         } else {
-            mysqli_stmt_bind_param($stmt, "ii", $collegeID, $intSkillID);
+            mysqli_stmt_bind_param($stmt, "ii", $studentID, $intSkillID);
             mysqli_stmt_execute($stmt);
         }
     }
@@ -89,18 +89,16 @@ if (isset($_POST['submit-create-student-profile'])) {
     $websiteURL = $_POST['websiteURL'];
     $logoURL = $_POST['logoURL'];
 
-    $sql = "INSERT INTO company (companyID, name, headquarters, description, websiteURL, logoURL) VALUES (?,?,?,?,?,?);";
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("Location: ../profile/createCompanyProfile.php?error=sqlerror");
-        exit();
-    } else {
-        mysqli_stmt_bind_param($stmt, "isssss", $companyID, $name, $headquarters, $description, $websiteURL, $logoURL);
-        mysqli_stmt_execute($stmt);
+    $stmt = "UPDATE company SET name = '$name', headquarters = '$headquarters', description = '$description', websiteURL = '$websiteURL', logoURL = '$logoURL' WHERE companyID = '$companyID' ;";
+    $updated = mysqli_query($conn, $stmt);
+    if ($updated) {
         session_unset();
         session_destroy();
         header("Location: ../auth/signInCompany.php?signup=success");
         exit();
+    } else {
+        $error = mysqli_error($conn);
+        echo $error;
     }
 } else {
     header("Location: ../index.php");

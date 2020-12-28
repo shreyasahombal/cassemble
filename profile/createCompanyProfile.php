@@ -45,13 +45,13 @@ if (!mysqli_stmt_prepare($stmt, $sql)) { //checking if connection is perfect
                 <label for="name" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">FULL NAME</label>
                 <input id="name" type="text" name="name" placeholder="Some Company" autocomplete="name" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
                 <label for="headquarters" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">headquarters</label>
-                <input id="headquarters" type="text" name="headquarters" placeholder="Bengaluru" autocomplete="name" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+                <input id="headquarters" type="text" name="headquarters" placeholder="Bengaluru" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
                 <label for="description" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">description</label>
-                <input id="description" type="text" name="description" placeholder="Some Engineering College" autocomplete="name" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+                <input id="description" type="text" name="description" placeholder="About the Company. In Short" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
                 <label for="websiteURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Website URL</label>
-                <input id="websiteURL" type="url" name="websiteURL" placeholder="somecollege.edu.in" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+                <input id="websiteURL" type="url" name="websiteURL" placeholder="somecollege.edu.in" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
                 <label for="logoURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Logo URL</label>
-                <input id="logoURL" type="url" name="logoURL" placeholder="somecollege.edu.in" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+             <input id="logoURL" type="url" name="logoURL" placeholder="somecollege.edu.in" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
                 <button type="submit" name="submit-create-company-profile" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
                     Done
                 </button>

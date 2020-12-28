@@ -1,16 +1,18 @@
 <?php
 require 'backend/db.php';
 session_start();
-$studentID = $collegeID = $companyID = '';
+$studentID = $collegeID = $companyID = $id = 0;
+$userType;
 if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
     if ($_SESSION['userType'] === 'student') {
         $studentID = $_SESSION['userID'];
     } else if ($_SESSION['userType'] === 'college') {
         $collegeID = $_SESSION['userID'];
-    } else {
+    } else if ($_SESSION['userType'] === 'company') {
         $companyID = $_SESSION['userID'];
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +28,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
 
 <body>
     <!-- <div class="text-center font-black text-3xl">cassemble</div> -->
-    <nav class="bg-white px-6 py-4 shadow">
+    <nav class="sticky bg-white px-6 py-4 shadow">
         <div class="flex flex-col container mx-auto md:flex-row md:items-center md:justify-between">
             <div class="flex justify-between items-center">
                 <div>
@@ -48,7 +50,8 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 <?php
                 if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 ?>
-                    <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Sign Out</a>
+                    <a href="profile/profile.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Profile</a>
+                    <a href="backend/signout.bkd.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Sign Out</a>
                 <?php
                 }
                 ?>
@@ -80,7 +83,8 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
             $studentID = $slatesArr['studentID'];
             $collegeID = $slatesArr['collegeID'];
             $companyID = $slatesArr['companyID'];
-            if ($studentID !== NULL || $studentID !== '') {
+            $content = $slatesArr['content'];
+            if ($studentID !== NULL && $studentID !== '') {
                 $studentQuery = mysqli_query($conn, "SELECT student.name as studentName, student.streamYear, college.name as collegeName, stream.acronym, city.name as cityName FROM student, college, stream, city WHERE student.studentID = $studentID AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
 
                 while ($studentArr = mysqli_fetch_array($studentQuery)) {
@@ -98,9 +102,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                                 <p class="mb-5 text-black font-light text-xs">2h</p>
                             </div>
                         </div>
-                        <div class="my-5 mx-5 font-medium">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, ratione dicta deleniti, quas distinctio, veniam quo rem eveniet aliquid repudiandae fuga asperiores reiciendis tenetur? Eius quidem impedit et soluta accusamus.
-                        </div>
+                        <div class="my-5 mx-5 font-medium"><?= $content ?></div>
                     </div>
         <?php
                 }
