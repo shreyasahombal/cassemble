@@ -88,12 +88,14 @@ if (!mysqli_stmt_prepare($stmt, $sql)) { //checking if connection is perfect
                     mysqli_close($conn);
                     ?>
                 </select>
-                <label for="websiteURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Website URL</label>
-                <input id="websiteURL" type="url" name="websiteURL" placeholder="www.my-name.dev" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+                <label for="githubURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Website URL</label>
+                <input id="githubURL" type="url" name="githubURL" placeholder="www.github.com/" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
                 <label for="imageURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Profile Image URL</label>
                 <input id="imageURL" type="url" name="imageURL" placeholder="http://" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
                 <label for="resumeURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Resume URL</label>
                 <input id="resumeURL" type="url" name="resumeURL" placeholder="http://" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+                <label for="twitterURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Resume URL</label>
+                <input id="twitterURL" type="url" name="twitterURL" placeholder="http://" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
                 <button type="submit" name="submit-create-student-profile" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
                     Done
                 </button>

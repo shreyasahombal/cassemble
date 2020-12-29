@@ -59,7 +59,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
     </nav>
     <?php
     if ($studentID !== 0) {
-        $studentQuery = mysqli_query($conn, "SELECT student.name as studentName, student.streamYear, college.name as collegeName, stream.name as streamName, city.name as cityName FROM student, college, stream, city WHERE student.studentID = $studentID AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
+        $studentQuery = mysqli_query($conn, "SELECT student.name as studentName, student.githubURL, student.resumeURL, student.twitterURL, student.streamYear, student.imageURL as studentImage, college.name as collegeName, stream.name as streamName, city.name as cityName FROM student, college, stream, city WHERE student.studentID = $studentID AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
 
         while ($studentArr = mysqli_fetch_array($studentQuery)) {
     ?>
@@ -68,35 +68,37 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
 
                     <div class="bg-white relative shadow-xl w-5/6 md:w-4/6  lg:w-3/6 xl:w-2/6 mx-auto">
                         <div class="flex justify-center">
-                            <img src="https://randomuser.me/api/portraits/women/39.jpg" alt="" class="rounded-full mx-auto absolute -top-20 w-32 h-32 shadow-2xl border-4 border-white">
+                            <img src="<?= $studentArr['studentImage'] ?>" alt="" class="rounded-full mx-auto absolute -top-20 w-32 h-32 shadow-2xl border-4 border-white">
                         </div>
                         <!-- https://pantazisoft.com/img/avatar-2.jpeg -->
                         <div class="mt-16">
                             <h1 class="font-bold text-center text-3xl text-gray-900"><?= $studentArr['studentName'] ?></h1>
-                            <p class="text-center text-sm text-gray-400 font-medium"><?= $studentArr['streamYear'] ?> Year . <?= $studentArr['streamName'] ?></p>
-                            <p class="text-center text-sm text-gray-400 font-medium"><?= $studentArr['collegeName'] ?></p>
-                            <div class="mt-6 pt-3 flex flex-wrap mx-6 border-t">
-                                <div class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600 hover:text-indigo-100 cursor-default">
-                                    User experience
-                                </div>
-                                <div class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600 hover:text-indigo-100 cursor-default">
-                                    VueJS
-                                </div>
-                                <div class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600 hover:text-indigo-100 cursor-default">
-                                    TailwindCSS
-                                </div>
-                                <div class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600 hover:text-indigo-100 cursor-default">
-                                    React
-                                </div>
-                                <div class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600 hover:text-indigo-100 cursor-default">
-                                    Painting
-                                </div>
+                            <p class="m-3 text-center text-sm text-gray-700 font-medium"><?= $studentArr['streamYear'] ?> Year . <?= $studentArr['streamName'] ?></p>
+                            <p class="text-center text-sm text-gray-900 font-medium"><?= $studentArr['collegeName'] ?></p>
+                            <div class="mt-6 pt-3 flex flex-wrap mx-6 border-t justify-center">
+                            <?php
+                            $studentandskillQuery = mysqli_query($conn, "SELECT skillID FROM studentandskill WHERE studentID = $studentID LIMIT 3");
+                            while ($studentandskillArr = mysqli_fetch_array($studentandskillQuery)) {
+                                $skillQuery = mysqli_query($conn, "SELECT name FROM skill WHERE skillID='" . $studentandskillArr['skillID'] . "';");
+                                if ($skillQuery == false) {
+                                    die('Error: ' . mysqli_error($conn));
+                                } else {
+                                    while ($skillArr = mysqli_fetch_array($skillQuery)) {
+                            ?>
+                                        <div class="text-xs mr-2 my-1 uppercase tracking-wider border px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600 hover:text-indigo-100 cursor-default">
+                                            <?= $skillArr['name'] ?>
+                                        </div>
+                            <?php
+                                    }
+                                }
+                            }
+                            ?>
                             </div>
+                                
                             <div class="flex justify-evenly my-5">
-                                <a href="" class="bg font-bold text-sm  w-full text-center py-3 bg-blue-800 text-white shadow-lg">Facebook</a>
-                                <a href="" class="bg font-bold text-sm  w-full text-center py-3 bg-blue-400 text-white shadow-lg">Twitter</a>
-                                <a href="" class="bg font-bold text-sm  w-full text-center py-3 bg-yellow-600 text-white shadow-lg">Instagram</a>
-                                <a href="" class="bg font-bold text-sm  w-full text-center py-3 bg-gray-600 text-white shadow-lg">Email</a>
+                                <a href="<?= $studentArr['githubURL'] ?>" target="_blank" class="bg font-bold text-sm  w-full text-center py-3 bg-gray-600 text-white shadow-lg">Github</a>
+                                <a href="<?= $studentArr['resumeURL'] ?>" target="_blank" class="bg font-bold text-sm  w-full text-center py-3 bg-yellow-600 text-white shadow-lg">Resume</a>
+                                <a href="<?= $studentArr['twitterURL'] ?>" target="_blank" class="bg font-bold text-sm  w-full text-center py-3 bg-blue-400 text-white shadow-lg">Twitter</a>
                             </div>
                         </div>
                     </div>

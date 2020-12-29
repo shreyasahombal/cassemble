@@ -11,9 +11,10 @@ if (isset($_POST['submit-create-student-profile'])) {
     $streamID = $_POST['streamID'];
     $streamYear = $_POST['streamYear'];
     $skillsArray = $_POST['skills'];
-    $websiteURL = $_POST['websiteURL'];
+    $githubURL = $_POST['githubURL'];
     $imageURL = $_POST['imageURL'];
     $resumeURL = $_POST['resumeURL'];
+    $twitterURL = $_POST['twitterURL'];
 
     foreach ((array)$skillsArray as $skillID) {
         $intSkillID = (int)$skillID;
@@ -29,7 +30,7 @@ if (isset($_POST['submit-create-student-profile'])) {
     }
 
 
-    $stmt = "UPDATE student SET name = '$name', collegeID = '$collegeID', streamID = '$streamID', websiteURL = '$websiteURL', imageURL = '$imageURL', resumeURL = '$resumeURL', streamYear = '$streamYear' WHERE studentID = '$studentID';";
+    $stmt = "UPDATE student SET name = '$name', collegeID = '$collegeID', streamID = '$streamID', githubURL = '$githubURL', imageURL = '$imageURL', resumeURL = '$resumeURL', twitterURL = '$twitterURL', streamYear = '$streamYear' WHERE studentID = '$studentID';";
     $updated = mysqli_query($conn, $stmt);
     if ($updated) {
         session_unset();
