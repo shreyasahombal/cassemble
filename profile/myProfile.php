@@ -49,7 +49,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 ?>
                     <a href="profile/profile.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Profile</a>
-                    <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Sign Out</a>
+                    <a href="../backend/signout.bkd.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Sign Out</a>
                 <?php
                 }
                 ?>
@@ -115,9 +115,9 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
             <div class="container mx-auto mt-20 pt-5">
                 <div>
 
-                    <div class="bg-white relative shadow-xl w-5/6 md:w-4/6  lg:w-3/6 xl:w-2/6 mx-auto">
+                    <div class="bg-white relative shadow-2xl w-5/6 md:w-4/6  lg:w-3/6 xl:w-2/6 mx-auto">
                         <div class="flex justify-center">
-                            <img src="<?= $collegeArr['logoURL'] ?>" alt="" class="rounded-full mx-auto absolute -top-20 w-32 h-32 shadow-2xl border-4 border-white">
+                            <img src="<?= $collegeArr['logoURL'] ?>" alt="" class="rounded-full mx-auto absolute -top-20 w-32 h-32 shadow-2xl ">
                         </div>
                         <!-- https://pantazisoft.com/img/avatar-2.jpeg -->
                         <div class="mt-16">

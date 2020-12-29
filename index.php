@@ -6,11 +6,15 @@ $userType;
 if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
     if ($_SESSION['userType'] === 'student') {
         $studentID = $_SESSION['userID'];
+        $userType = 'student';
     } else if ($_SESSION['userType'] === 'college') {
         $collegeID = $_SESSION['userID'];
+        $userType = 'college';
     } else if ($_SESSION['userType'] === 'company') {
         $companyID = $_SESSION['userID'];
+        $userType = 'company';
     }
+    $userID = $_SESSION['userID'];
 }
 
 ?>
@@ -62,7 +66,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
     <?php
     if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) { ?>
 
-        <div class="max-w-xl mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
+        <div class="max-w-xl mx-auto mt-5 px-4 py-4 bg-white shadow-md rounded-lg">
             <div class="uppercase text-l font-bold text-center">
                 Create a Slate
             </div>
@@ -85,24 +89,102 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
             $companyID = $slatesArr['companyID'];
             $content = $slatesArr['content'];
             if ($studentID !== NULL && $studentID !== '') {
-                $studentQuery = mysqli_query($conn, "SELECT student.name as studentName, student.streamYear, college.name as collegeName, stream.acronym, city.name as cityName FROM student, college, stream, city WHERE student.studentID = $studentID AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
+                $studentQuery = mysqli_query($conn, "SELECT student.name as studentName, student.imageURL as studentImage, student.streamYear, college.name as collegeName, stream.acronym, city.name as cityName FROM student, college, stream, city WHERE student.studentID = $studentID AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
 
                 while ($studentArr = mysqli_fetch_array($studentQuery)) {
-                    echo $studentArr['studentName'];
         ?>
 
-                    <div class="max-w-xl mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
+                    <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
                         <div class="flex flex-row items-center">
-                            <img class="rounded-full h-10 w-10" src="https://images.unsplash.com/photo-1520065786657-b71a007dd8a5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=80" />
+                            <img class="rounded-full h-10 w-10" src="<?= $studentArr['studentImage'] ?>" />
                             <div class="ml-5">
                                 <p class=" text-black font-bold"><?= $studentArr['studentName'] ?></p>
-                                <p class=" text-black font-normal text-xs"><?= $studentArr['acronym'] ?> . <?= $studentArr['streamYear'] ?> . <?= $studentArr['collegeName'] ?> . <?= $studentArr['cityName'] ?></p>
+                                <p class=" text-black font-light text-xs"><?= $studentArr['acronym'] ?> . <?= $studentArr['streamYear'] ?> . <?= $studentArr['collegeName'] ?> . <?= $studentArr['cityName'] ?></p>
                             </div>
                             <div class="ml-auto">
-                                <p class="mb-5 text-black font-light text-xs">2h</p>
+                                <?php
+                                $slateTime;
+                                date_default_timezone_set('Asia/Kolkata');
+                                $time_ago = strtotime($slatesArr['createdAt']);
+                                $current_time = time();
+                                $time_difference = $current_time - $time_ago;
+                                $seconds = $time_difference;
+                                $minutes = round($seconds / 60);
+                                $hours = round($seconds / 3600);
+                                $days = round($seconds / 86400);
+                                $weeks = round($seconds / 604800);
+                                $months = round($seconds / 2629440);
+                                $years = round($seconds / 31553280);
+                                if ($seconds <= 60) {
+                                    $slateTime = "NOW";
+                                } else if ($minutes <= 60) {
+                                    if ($minutes == 1) {
+                                        $slateTime = "1 min";
+                                    } else {
+                                        $slateTime = "$minutes mins";
+                                    }
+                                } else if ($hours <= 24) {
+                                    if ($hours == 1) {
+                                        $slateTime = "1 hr";
+                                    } else {
+                                        $slateTime = "$hours hrs";
+                                    }
+                                } else if ($days <= 7) {
+                                    if ($days == 1) {
+                                        $slateTime = "yesterday";
+                                    } else {
+                                        $slateTime = "$days d";
+                                    }
+                                } else if ($weeks <= 4.3) //4.3 == 52/12  
+                                {
+                                    if ($weeks == 1) {
+                                        $slateTime = "1 w";
+                                    } else {
+                                        $slateTime = "$weeks w";
+                                    }
+                                } else if ($months <= 12) {
+                                    if ($months == 1) {
+                                        $slateTime = "1 m";
+                                    } else {
+                                        $slateTime = "$months m";
+                                    }
+                                } else {
+                                    if ($years == 1) {
+                                        $slateTime = "1 y";
+                                    } else {
+                                        $slateTime = "$years y";
+                                    }
+                                }
+                                ?>
+                                <p class="mb-5 text-black font-light text-xs"><?= $slateTime ?></p>
                             </div>
                         </div>
-                        <div class="my-5 mx-5 font-medium"><?= $content ?></div>
+                        <div class="my-5 mx-5 font-normal text-justify"><?= $content ?></div>
+                        <div class="flex justify-evenly text-center">
+                            <div class="flex">
+                                <?php
+                                $idString = 'ID';
+                                $idColumn = $userType . $idString;
+
+                                $bookmarkedQuery = mysqli_query($conn, "SELECT * FROM bookmarks WHERE slateID = " . $slatesArr['slateID'] . " AND $idColumn = $userID ;");
+
+                                if ($bookmarkedArr = mysqli_fetch_array($bookmarkedQuery)) {
+                                ?>
+                                    <img class="w-5 bookmark" src="public/icons/bookmark.svg" data-id="<?= $slatesArr['slateID']; ?>" alt="" srcset="">
+                                    <img class="w-5 bookmarko hidden" src="public/icons/bookmark-o.svg" data-id="<?= $slatesArr['slateID']; ?>" alt="" srcset="">
+                                <?php
+                                } else {
+                                ?>
+                                    <img class="w-5 bookmarko" src="public/icons/bookmark-o.svg" data-id="<?= $slatesArr['slateID']; ?>" alt="" srcset="">
+                                    <img class="w-5 bookmark hidden" src="public/icons/bookmark.svg" data-id="<?= $slatesArr['slateID']; ?>" alt="" srcset="">
+                                <?php
+                                }
+                                ?>
+                            </div>
+                            <div>
+                                <img class="w-5 reply-o" src="public/icons/reply-o.svg" alt="" srcset="">
+                            </div>
+                        </div>
                     </div>
         <?php
                 }
@@ -126,6 +208,49 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
     <?php
     }
     ?>
+
+    <script>
+        $(document).ready(function() {
+            $('.bookmarko').click(function() {
+                var slateID = $('.bookmarko').data('id');
+                $.ajax({
+                    url: 'backend/bookmark.php',
+                    type: 'post',
+                    data: {
+                        'bookmark': 1,
+                        'slateID': slateID
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        $('.bookmarko').hide();
+                        $('.bookmark').show();
+                    }
+                });
+            });
+
+            $('.bookmark').click(function() {
+                var slateID = $('.bookmark').data('id');
+                $.ajax({
+                    url: 'backend/bookmark.php',
+                    type: 'post',
+                    data: {
+                        'unbookmark': 1,
+                        'slateID': slateID
+                    },
+                    success: function(res) {
+                        $('.bookmark').hide();
+                        $('.bookmarko').show();
+                    }
+                });
+            });
+
+
+            // $('.bookmarko').click(function() {
+            //     $('.bookmarko').hide();
+            // });
+
+        });
+    </script>
 
 </body>
 
