@@ -36,8 +36,8 @@ if (isset($_POST['submit-slate'])) {
             exit();
         } else {
             mysqli_stmt_bind_param($stmt, "is", $collegeID, $content);
-            mysqli_stmt_execute($stmt);
-            if(mysqli_stmt_execute($stmt)) {
+            $addSlate = mysqli_stmt_execute($stmt);
+            if($addSlate) {
                 header('Location: ../index.php?addSlate=success');
                 exit();
             } else {
@@ -55,8 +55,8 @@ if (isset($_POST['submit-slate'])) {
             exit();
         } else {
             mysqli_stmt_bind_param($stmt, "is",$companyID, $content);
-            mysqli_stmt_execute($stmt);
-            if(mysqli_stmt_execute($stmt)) {
+            $addSlate = mysqli_stmt_execute($stmt);
+            if($addSlate) {
                 header('Location: ../index.php?addSlate=success');
                 exit();
             } else {

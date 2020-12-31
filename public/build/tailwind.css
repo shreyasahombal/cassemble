@@ -12,6 +12,7 @@ Use a better box model (opinionated).
 *,
 *::before,
 *::after {
+  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
 

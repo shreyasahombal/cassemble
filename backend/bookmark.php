@@ -41,8 +41,10 @@ if (isset($_POST['bookmark'])) {
     if (!$result) {
         echo mysqli_error($conn);
     }
-    mysqli_query($conn, "UPDATE slate SET numOfBookmarks = numOfBookmarks-1 WHERE slateID = $slateID AND $idColumn = $userID;");
-
+    $result = mysqli_query($conn, "UPDATE slate SET numOfBookmarks = numOfBookmarks-1 WHERE slateID = $slateID");
+    if (!$result) {
+        echo mysqli_error($conn);
+    }
     echo 'bye';
 } else if (isset($_POST['bookmarked'])) {
     $slateID = $_POST['slateID'];
@@ -57,6 +59,17 @@ if (isset($_POST['bookmark'])) {
     }
 
     echo 'no';
+} else if (isset($_POST['replyToSlate'])) {
+    $slateID = $_POST['slateID'];
+    $content = $_POST['content'];
+    $idString = 'ID';
+    $idColumn = $userType . $idString;
+
+    $result = mysqli_query($conn, "INSERT INTO reply ($idColumn, slateID, content) VALUES ('".$userID."', '".$slateID."', '".$content."') ;");
+    if (!$result) {
+        echo mysqli_error($conn);
+    }
+
 } else {
     header('Location: ../test.php');
     exit();
