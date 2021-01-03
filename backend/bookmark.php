@@ -69,7 +69,24 @@ if (isset($_POST['bookmark'])) {
     if (!$result) {
         echo mysqli_error($conn);
     }
+} else if (isset($_POST['editSlate'])) {
+    $slateID = $_POST['slateID'];
+    $content = $_POST['content'];
 
+    echo $content;
+    $result = mysqli_query($conn, "UPDATE slate SET content = '".$content."' WHERE slateID = '".$slateID."' ;");
+    if (!$result) {
+        echo mysqli_error($conn);
+    }
+} else if (isset($_POST['editReply'])) {
+    $replyID = $_POST['replyID'];
+    $content = $_POST['content'];
+
+    echo $content;
+    $result = mysqli_query($conn, "UPDATE reply SET content = '".$content."' WHERE replyID = '".$replyID."' ;");
+    if (!$result) {
+        echo mysqli_error($conn);
+    }
 } else {
     header('Location: ../test.php');
     exit();

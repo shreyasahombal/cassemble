@@ -423,3 +423,14 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
 </body>
 
 </html>
+
+<div class="my-5 mx-5 font-normal editReplyBox hidden">
+    <div class="my-5 mx-5 font-normal editReplyBox hidden">
+        <div class="border-gray-900 mr-20 contentInEditReply">
+            <textarea autofocus class="bg-gray-100" name="content" id="contentInEditReply" cols="62" rows="5">
+                                                    <?= $repliesArr['content'] ?>
+                                                </textarea>
+        </div>
+        <button type="submit" name="submit-edit-reply" data-id="<?php echo $repliesArr['replyID']; ?>" class="submit-edit-reply w-full font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">Publish Edited reply</button>
+    </div>
+</div>

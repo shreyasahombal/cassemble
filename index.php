@@ -26,9 +26,15 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="public/build/tailwind.css" type="text/css" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.gstatic.com"><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>cassemble</title>
+    <style>
+        .slateMenuButton:hover+.slateMenu {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
@@ -88,16 +94,19 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
             $slateID = $slatesArr['slateID'];
 
             if ($slatesArr['studentID'] !== NULL && $slatesArr['studentID'] !== '') {
+                $creatorID = $slatesArr['studentID'];
                 $creatorType = 'student';
                 $creatorQuery = mysqli_query($conn, "SELECT student.name as creatorName, student.imageURL as creatorImage, student.streamYear, college.name as collegeName, stream.acronym, city.name as cityName FROM student, college, stream, city WHERE student.studentID = " . $slatesArr['studentID'] . " AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
             }
 
             if ($slatesArr['collegeID'] !== NULL && $slatesArr['collegeID'] !== '') {
+                $creatorID = $slatesArr['collegeID'];
                 $creatorType = 'college';
                 $creatorQuery = mysqli_query($conn, "SELECT college.name as creatorName, college.logoURL as creatorImage, city.name as cityName, state.name as stateName FROM college, city, state WHERE college.collegeID = " . $slatesArr['collegeID'] . " AND college.cityID = city.cityID AND college.stateID = state.stateID");
             }
 
             if ($slatesArr['companyID'] !== NULL && $slatesArr['companyID'] !== '') {
+                $creatorID = $slatesArr['companyID'];
                 $creatorType = 'company';
                 $creatorQuery = mysqli_query($conn, "SELECT company.name as creatorName, company.logoURL as creatorImage, company.headquarters as headquarters FROM company WHERE company.companyID = " . $slatesArr['companyID'] . ";");
             }
@@ -172,11 +181,43 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                             }
                         }
                         ?>
-                        <div class="ml-auto">
+                        <div class="pt-5 mr-2 ml-auto">
                             <p class="mb-5 text-black font-light text-xs"><?= $slateTime ?></p>
                         </div>
+                        <div>
+                            <div class="slateMenuButton inline-block relative">
+                                <img class="w-3 slateMenuButton" src="public/icons/ellipsis.svg" data-id="<?php echo $slatesArr['slateID']; ?>" alt="" srcset="">
+                                <ul class="slateMenu absolute hidden text-gray-700 pt-1">
+                                    <?php
+                                    if ($creatorID == $userID) { ?>
+                                        <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Share</a></li>
+                                        <li class="editSlateButton rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">Edit</li>
+                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="backend/deleteSlate.php?slateID=<?php echo $slatesArr['slateID']; ?>">Delete</a></li>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Share</a></li>
+                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Report</a></li>
+                                    <?php
+                                    }
+                                    ?>
+                                </ul>
+                            </div>
+                        </div>
+                        <style>
+                            .slateMenuButton:hover .slateMenu {
+                                display: block;
+                            }
+                        </style>
                     </div>
-                    <div class="my-5 mx-5 font-normal text-justify"><?= $slatesArr['content'] ?></div>
+                    <div class="slateContent my-5 mx-5 font-normal text-justify"><?= $slatesArr['content'] ?></div>
+                    <div class="my-5 mx-5 font-normal editSlateBox hidden">
+                        <div class="border-gray-900 mr-20 contentInEditSlate">
+                            <textarea autofocus class="bg-gray-100" name="content" id="contentInEditSlate" cols="62" rows="5">
+                            <?= $slatesArr['content'] ?></textarea>
+                        </div>
+                        <button type="submit" name="submit-edit-slate" data-id="<?php echo $slatesArr['slateID']; ?>" class="submit-edit-slate w-full font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">Publish Edit</button>
+                    </div>
                     <div class="flex justify-evenly text-center actionBar">
                         <div class="flex">
                             <?php
@@ -213,16 +254,19 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
 
                         while ($repliesArr = mysqli_fetch_array($repliesQuery)) {
                             if ($repliesArr['studentID'] !== NULL && $repliesArr['studentID'] !== '') {
+                                $replierID = $repliesArr['studentID'];
                                 $replierType = 'student';
                                 $replierQuery = mysqli_query($conn, "SELECT student.name as creatorName, student.imageURL as creatorImage, student.streamYear, college.name as collegeName, stream.acronym, city.name as cityName FROM student, college, stream, city WHERE student.studentID = " . $repliesArr['studentID'] . " AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
                             }
 
                             if ($repliesArr['collegeID'] !== NULL && $repliesArr['collegeID'] !== '') {
+                                $replierID = $repliesArr['collegeID'];
                                 $replierType = 'college';
                                 $replierQuery = mysqli_query($conn, "SELECT college.name as creatorName, college.logoURL as creatorImage, city.name as cityName, state.name as stateName FROM college, city, state WHERE college.collegeID = " . $repliesArr['collegeID'] . " AND college.cityID = city.cityID AND college.stateID = state.stateID");
                             }
 
                             if ($repliesArr['companyID'] !== NULL && $repliesArr['companyID'] !== '') {
+                                $replierID = $repliesArr['companyID'];
                                 $replierType = 'company';
                                 $replierQuery = mysqli_query($conn, "SELECT company.name as creatorName, company.logoURL as creatorImage, company.headquarters as headquarters FROM company WHERE company.companyID = " . $repliesArr['companyID'] . ";");
                             }
@@ -300,8 +344,44 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                                         <div class="ml-auto">
                                             <p class="mb-5 text-black font-light text-xs"><?= $replyTime ?></p>
                                         </div>
+
+                                        <div>
+                                            <div class="slateMenuButton inline-block relative">
+                                                <img class="w-3 slateMenuButton" src="public/icons/ellipsis.svg" data-id="<?php echo $slatesArr['slateID']; ?>" alt="" srcset="">
+                                                <ul class="slateMenu absolute hidden text-gray-700 pt-1">
+                                                    <?php
+                                                    if ($replierID == $userID) { ?>
+                                                        <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Share</a></li>
+                                                        <li class="editReplyButton bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">Edit</li>
+                                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="backend/deleteReply.php?replyID=<?php echo $repliesArr['replyID']; ?>">Delete</a></li>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Share</a></li>
+                                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Report</a></li>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <style>
+                                            .slateMenuButton:hover .slateMenu {
+                                                display: block;
+                                            }
+                                        </style>
                                     </div>
-                                    <div class="mt-2 mx-10 px-3 font-normal text-justify"><?= $repliesArr['content'] ?></div>
+                                    <div class="replyContent mt-2 mx-10 px-3 font-normal text-justify"><?= $repliesArr['content'] ?></div>
+                                    <div class="my-5 mx-5 font-normal editReplyBox hidden">
+                                        <div class="my-5 mx-5 font-normal">
+                                            <div class="border-gray-900 mr-20 contentInEditReply">
+                                                <textarea autofocus class="bg-gray-100" name="content" id="contentInEditReply" cols="52" rows="5">
+                                                    <?= $repliesArr['content'] ?>
+                                                </textarea>
+                                            </div>
+                                            <button type="submit" name="submit-edit-reply" data-id="<?php echo $repliesArr['replyID']; ?>" class="submit-edit-reply w-full font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">Publish Edited reply</button>
+                                        </div>
+                                    </div>
                                 </div>
                         <?php
                             }
@@ -331,6 +411,50 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
 
     <script>
         $(document).ready(function() {
+
+            $('.submit-edit-slate').click(function() {
+                var slateID = $(this).data('id');
+                $editSlateSubmitButton = $(this);
+                var content = $editSlateSubmitButton.siblings('.contentInEditSlate').children('#contentInEditSlate').val();
+                $.ajax({
+                    url: 'backend/bookmark.php',
+                    type: 'post',
+                    data: {
+                        'editSlate': 1,
+                        'slateID': slateID,
+                        'content': content
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        location.reload(true);
+                        // $replySubmitButton.parent().siblings('.actionBox').children('.replyIconButtons').children('.reply').addClass('hidden');
+                        // $replySubmitButton.parent().siblings('.actionBox').children('.replyIconButtons').children('.replyo').trigger('click');
+                        // $replySubmitButton.parent().addClass('hidden');
+                    }
+                });
+            });
+
+            $('.submit-edit-reply').click(function() {
+                var replyID = $(this).data('id');
+                $editReplySubmitButton = $(this);
+                var content = $editReplySubmitButton.siblings('.contentInEditReply').children('#contentInEditReply').val();
+                $.ajax({
+                    url: 'backend/bookmark.php',
+                    type: 'post',
+                    data: {
+                        'editReply': 1,
+                        'replyID': replyID,
+                        'content': content
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        location.reload(true);
+                        // $replySubmitButton.parent().siblings('.actionBox').children('.replyIconButtons').children('.reply').addClass('hidden');
+                        // $replySubmitButton.parent().siblings('.actionBox').children('.replyIconButtons').children('.replyo').trigger('click');
+                        // $replySubmitButton.parent().addClass('hidden');
+                    }
+                });
+            });
 
             $('.bookmarko').click(function() {
                 var slateID = $(this).data('id');
@@ -409,6 +533,20 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 $replySlate.siblings().removeClass('hidden');
                 $replySlate.addClass('hidden');
             });
+
+            $('.editSlateButton').click(function() {
+                $post = $(this);
+                $post.parent().parent().parent().parent().siblings('.slateContent').addClass('hidden');
+                $post.parent().parent().parent().parent().siblings('.editSlateBox').removeClass('hidden');
+            });
+
+            
+            $('.editReplyButton').click(function() {
+                console.log('Clicked');
+                $post = $(this);
+                $post.parent().parent().parent().parent().siblings('.replyContent').addClass('hidden');
+                $post.parent().parent().parent().parent().siblings('.editReplyBox').removeClass('hidden');
+            })
 
 
 
