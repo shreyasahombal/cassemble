@@ -30,11 +30,6 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>cassemble</title>
-    <style>
-        .slateMenuButton:hover+.slateMenu {
-            display: block;
-        }
-    </style>
 </head>
 
 <body>
@@ -55,7 +50,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 </div>
             </div>
             <div class="md:flex flex-col md:flex-row md:-mx-4 hidden">
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Jobs</a>
+                <a href="jobs.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Jobs</a>
                 <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Slates</a>
                 <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Events</a>
                 <?php
@@ -96,13 +91,13 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
             if ($slatesArr['studentID'] !== NULL && $slatesArr['studentID'] !== '') {
                 $creatorID = $slatesArr['studentID'];
                 $creatorType = 'student';
-                $creatorQuery = mysqli_query($conn, "SELECT student.name as creatorName, student.imageURL as creatorImage, student.streamYear, college.name as collegeName, stream.acronym, city.name as cityName FROM student, college, stream, city WHERE student.studentID = " . $slatesArr['studentID'] . " AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
+                $creatorQuery = mysqli_query($conn, "SELECT student.name as creatorName, student.imageURL as creatorImage, student.streamYear, college.name as collegeName, college.collegeID, stream.acronym, city.cityID, stream.streamID, city.name as cityName FROM student, college, stream, city WHERE student.studentID = " . $slatesArr['studentID'] . " AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
             }
 
             if ($slatesArr['collegeID'] !== NULL && $slatesArr['collegeID'] !== '') {
                 $creatorID = $slatesArr['collegeID'];
                 $creatorType = 'college';
-                $creatorQuery = mysqli_query($conn, "SELECT college.name as creatorName, college.logoURL as creatorImage, city.name as cityName, state.name as stateName FROM college, city, state WHERE college.collegeID = " . $slatesArr['collegeID'] . " AND college.cityID = city.cityID AND college.stateID = state.stateID");
+                $creatorQuery = mysqli_query($conn, "SELECT college.name as creatorName, college.logoURL as creatorImage, city.name as cityName, city.cityID, state.name as stateName, state.stateID FROM college, city, state WHERE college.collegeID = " . $slatesArr['collegeID'] . " AND college.cityID = city.cityID AND college.stateID = state.stateID");
             }
 
             if ($slatesArr['companyID'] !== NULL && $slatesArr['companyID'] !== '') {
@@ -115,14 +110,16 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
         ?>
                 <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
                     <div class="flex flex-row items-center">
-                        <img class="rounded-full h-10 w-10" src="<?= $creatorArr['creatorImage'] ?>" />
+                        <a href="<?= $creatorType ?>.php?<?= $creatorType ?>ID=<?= $creatorID ?>" target="_blank"><img class="rounded-full h-10 w-10" src="<?= $creatorArr['creatorImage'] ?>" /></a>
                         <div class="ml-5">
-                            <p class=" text-black font-bold"><?= $creatorArr['creatorName'] ?></p>
+                            <a href="<?= $creatorType ?>.php?<?= $creatorType ?>ID=<?= $creatorID ?>" target="_blank">
+                                <p class=" text-black font-bold"><?= $creatorArr['creatorName'] ?></p>
+                            </a>
                             <?php
                             if ($creatorType == 'student') { ?>
-                                <p class=" text-black font-light text-xs"><?= $creatorArr['acronym'] ?> . <?= $creatorArr['streamYear'] ?> . <?= $creatorArr['collegeName'] ?> . <?= $creatorArr['cityName'] ?></p>
+                                <p class=" text-black font-light text-xs"><a href="studentsList.php?streamID=<?= $creatorArr['streamID'] ?>&collegeID=<?= $creatorArr['collegeID'] ?>" target="_blank"><?= $creatorArr['acronym'] ?></a> . <a href="studentsList.php?streamYear=<?= $creatorArr['streamYear'] ?>&collegeID=<?= $creatorArr['collegeID'] ?>" target="_blank"><?= $creatorArr['streamYear'] ?></a> . <a href="college.php?collegeID=<?= $creatorArr['collegeID'] ?>" target="_blank"><?= $creatorArr['collegeName'] ?></a> . <a href="studentsList.php?cityID=<?= $creatorArr['cityID'] ?>" target="_blank"><?= $creatorArr['cityName'] ?></a></p>
                             <?php } else if ($creatorType == 'college') { ?>
-                                <p class=" text-black font-light text-xs"> <?= $creatorArr['cityName'] ?> . <?= $creatorArr['stateName'] ?></p>
+                                <p class=" text-black font-light text-xs"><a href="collegesList.php?cityID=<?= $creatorArr['cityID'] ?>" target="_blank"> <?= $creatorArr['cityName'] ?> </a> .<a href="collegesList.php?stateID=<?= $creatorArr['stateID'] ?>" target="_blank"> <?= $creatorArr['stateName'] ?></a></p>
                             <?php } else if ($creatorType == 'company') { ?>
                                 <p class=" text-black font-light text-xs"> <?= $creatorArr['headquarters'] ?> </p>
                             <?php } ?>
@@ -540,7 +537,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 $post.parent().parent().parent().parent().siblings('.editSlateBox').removeClass('hidden');
             });
 
-            
+
             $('.editReplyButton').click(function() {
                 console.log('Clicked');
                 $post = $(this);

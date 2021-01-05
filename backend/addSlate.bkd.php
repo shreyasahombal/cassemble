@@ -9,7 +9,6 @@ if (isset($_POST['submit-slate'])) {
     $content = $_POST['content'];
 
     if($studentID != 0) {
-        echo 'Hi';
         $sql = "INSERT INTO slate (studentID, content) VALUES (?,?) ;";
         $stmt = mysqli_stmt_init($conn);
         if (!mysqli_stmt_prepare($stmt, $sql)) {
