@@ -56,9 +56,6 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 <a href="jobs.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Jobs</a>
                 <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Slates</a>
                 <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Events</a>
-                <?php
-                if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
-                ?>
                     <a href="profile/myProfile.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Profile</a>
                     <a href="backend/signout.bkd.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Sign Out</a>
                 <?php
