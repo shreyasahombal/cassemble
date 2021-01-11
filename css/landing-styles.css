@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.background{
+    
+    background-size: cover;
+    background-blend-mode: darken;
+}
+
+.box-main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    max-width: 60%;
+    margin: auto;
+    height: 70%;
+}
+.firstsection{
+    height: 90vh;
+}
+.sign{
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.dropdown{
+    margin-right: 50%;
+    margin-left: 25%;
+    font-size: 20px;
+}
+
+.text{
+    font-size: 70px;
+    font-family: 'Courgette', cursive;
+}
+.btn{
+    font-size: 20px;
+}
+
+
+
+.page-footer {
+    background-color: black;
+    color: white;
+}
+
+@media only screen and (max-width:1140px){
+
+    .box-main{
+        flex-direction: column-reverse;
+        
+    }
+    
+    .firstsection{
+        height: unset;
+    }
+}
