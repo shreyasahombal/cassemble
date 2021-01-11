@@ -51,7 +51,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
             </div>
             <div class="md:flex flex-col md:flex-row md:-mx-4 hidden">
                 <a href="jobs.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Jobs</a>
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Slates</a>
+                <a href="" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Slates</a>
                 <a href="events.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Events</a>
                 <?php
                 if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
@@ -391,16 +391,9 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
         }
     } else { ?>
 
-        <h5>Not Signed In</h5>
-        <h3>Get Started As:</h3>
-        <button><a href="auth/signUpStudent.php">Student</a></button>
-        <button><a href="auth/signUpCollege.php">College</a></button>
-        <button><a href="auth/signUpCompany.php">Company</a></button>
-        <br><br><br>
-        <h3>Sign In As:</h3>
-        <button><a href="auth/signInStudent.php">Student</a></button>
-        <button><a href="auth/signInCollege.php">College</a></button>
-        <button><a href="auth/signInCompany.php">Company</a></button>
+        <div class="landing">
+        <?php include 'landing.php';?>
+        </div>
     <?php
     }
     ?>
