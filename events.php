@@ -91,9 +91,9 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
         $eventsQuery = mysqli_query($conn, "SELECT * FROM events ORDER BY createdAt DESC");
 
         while ($eventsArr = mysqli_fetch_array($eventsQuery)) {
-            $jobID = $eventsArr['jobID'];
+            $eventID = $eventsArr['eventID'];
 
-            $collegeQuery = mysqli_query($conn, "SELECT college.name, college.logoURL, city.name as cityName, state.name as stateName FROM college, city, state WHERE college.collegeID = '" . $eventsArr['collegeID'] . "' college.cityID = city.cityID college.stateID = state.stateID ;");
+            $collegeQuery = mysqli_query($conn, "SELECT college.name, college.logoURL, city.name as cityName, state.name as stateName FROM college, city, state WHERE college.collegeID = '" . $eventsArr['collegeID'] . "' AND college.cityID = city.cityID AND college.stateID = state.stateID ;");
 
             while ($collegeArr = mysqli_fetch_array($collegeQuery)) {
             ?>
@@ -104,7 +104,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                             <a href="college.php?collegeID=<?= $eventsArr['collegeID'] ?>" target="_blank">
                                 <p class=" text-black font-bold"><?= $eventsArr['title'] ?></p>
                             </a>
-                            <p class=" text-black font-light text-sm"><?= $collegeArr['name'] ?> . <?= $collegeArr['headquarters'] ?></p>
+                            <p class=" text-black font-light text-sm"><?= $collegeArr['name'] ?> . <?= $collegeArr['cityName'] ?> . <?= $collegeArr['stateName'] ?></p>
                         </div>
                         <?php
                         $eventPostedTime;
@@ -166,13 +166,13 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
 
                         <div>
                             <div class="slateMenuButton inline-block relative">
-                                <img class="w-3 slateMenuButton" src="public/icons/ellipsis.svg" data-id="<?php echo $eventsArr['jobID']; ?>" alt="" srcset="">
+                                <img class="w-3 slateMenuButton" src="public/icons/ellipsis.svg" data-id="<?php echo $eventsArr['eventID']; ?>" alt="" srcset="">
                                 <ul class="slateMenu absolute hidden text-gray-700 pt-1">
                                     <?php
                                     if ($eventsArr['collegeID'] == $userID) { ?>
                                         <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Share</a></li>
                                         <li class="editSlateButton rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">Edit</li>
-                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="backend/deleteSlate.php?jobID=<?php echo $eventsArr['jobID']; ?>">Delete</a></li>
+                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="backend/deleteSlate.php?eventID=<?php echo $eventsArr['eventID']; ?>">Delete</a></li>
                                     <?php
                                     } else {
                                     ?>
@@ -190,40 +190,40 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                             }
                         </style>
                     </div>
-                    <div class="jobContent h-56 overflow-auto my-5 mx-5 font-normal text-justify"><?= nl2br($eventsArr['content']) ?></div>
+                    <div class="eventContent overflow-auto my-5 mx-5 font-normal text-justify"><?= nl2br($eventsArr['content']) ?></div>
                     <?php
                     if ($userType == 'student') {
                     ?>
                         <div class="flex justify-evenly text-center actionBar">
                             <div class="flex">
                                 <?php
-                                $bookmarkedQuery = mysqli_query($conn, "SELECT * FROM bookmarks WHERE jobID = '" . $eventsArr['jobID'] . "' AND collegeID = '" . $userID . "' ;");
+                                $bookmarkedQuery = mysqli_query($conn, "SELECT * FROM bookmarks WHERE eventID = '" . $eventsArr['eventID'] . "' AND collegeID = '" . $userID . "' ;");
 
                                 if ($bookmarkedArr = mysqli_fetch_array($bookmarkedQuery)) {
                                 ?>
-                                    <img class="w-5 bookmark" src="public/icons/bookmark.svg" data-id="<?php echo $eventsArr['jobID']; ?>" alt="" srcset="">
-                                    <img class="w-5 bookmarko hidden" src="public/icons/bookmark-o.svg" data-id="<?php echo $eventsArr['jobID']; ?>" alt="" srcset="">
+                                    <img class="w-5 bookmark" src="public/icons/bookmark.svg" data-id="<?php echo $eventsArr['eventID']; ?>" alt="" srcset="">
+                                    <img class="w-5 bookmarko hidden" src="public/icons/bookmark-o.svg" data-id="<?php echo $eventsArr['eventID']; ?>" alt="" srcset="">
                                 <?php
                                 } else {
                                 ?>
-                                    <img class="w-5 bookmarko" src="public/icons/bookmark-o.svg" data-id="<?php echo $eventsArr['jobID']; ?>" alt="" srcset="">
-                                    <img class="w-5 bookmark hidden" src="public/icons/bookmark.svg" data-id="<?php echo $eventsArr['jobID']; ?>" alt="" srcset="">
+                                    <img class="w-5 bookmarko" src="public/icons/bookmark-o.svg" data-id="<?php echo $eventsArr['eventID']; ?>" alt="" srcset="">
+                                    <img class="w-5 bookmark hidden" src="public/icons/bookmark.svg" data-id="<?php echo $eventsArr['eventID']; ?>" alt="" srcset="">
                                 <?php
                                 }
                                 ?>
                             </div>
                             <?php
-                            $appliedQuery = mysqli_query($conn, "SELECT * FROM jobandstudent WHERE jobID = '" . $eventsArr['jobID'] . "' AND studentID = '" . $userID . "' ;");
+                            $registeredQuery = mysqli_query($conn, "SELECT * FROM eventsandstudent WHERE eventID = '" . $eventsArr['eventID'] . "' AND studentID = '" . $userID . "' ;");
 
-                            if ($appliedArr = mysqli_fetch_array($appliedQuery)) {
+                            if ($registeredArr = mysqli_fetch_array($registeredQuery)) {
                             ?>
-                                <button class="applied uppercase shadow bg-gray-400 hover:bg-gray-900 focus:shadow-outline focus:outline-none text-white text-xs px-3 py-2 rounded-3xl" data-id="<?php echo $eventsArr['jobID']; ?>">APPLIED</button>
-                                <button class="apply hidden uppercase shadow bg-red-500 hover:bg-green-900 focus:shadow-outline focus:outline-none text-white text-xs px-3 py-2 rounded-3xl" data-id="<?php echo $eventsArr['jobID']; ?>">APPLY</button>
+                                <button class="registered uppercase shadow bg-gray-400 hover:bg-gray-900 focus:shadow-outline focus:outline-none text-white text-xs px-3 py-2 rounded-3xl" data-id="<?php echo $eventsArr['eventID']; ?>">REGISTERED</button>
+                                <button class="register hidden uppercase shadow bg-red-500 hover:bg-green-900 focus:shadow-outline focus:outline-none text-white text-xs px-3 py-2 rounded-3xl" data-id="<?php echo $eventsArr['eventID']; ?>">REGISTER</button>
                             <?php
                             } else {
                             ?>
-                                <button class="applied hidden uppercase shadow bg-gray-400 hover:bg-gray-900 focus:shadow-outline focus:outline-none text-white text-xs px-3 py-2 rounded-3xl" data-id="<?php echo $eventsArr['jobID']; ?>">APPLIED</button>
-                                <button class="apply uppercase shadow bg-red-500 hover:bg-green-900 focus:shadow-outline focus:outline-none text-white text-xs px-3 py-2 rounded-3xl" data-id="<?php echo $eventsArr['jobID']; ?>">APPLY</button>
+                                <button class="registered hidden uppercase shadow bg-gray-400 hover:bg-gray-900 focus:shadow-outline focus:outline-none text-white text-xs px-3 py-2 rounded-3xl" data-id="<?php echo $eventsArr['eventID']; ?>">REGISTERED</button>
+                                <button class="register uppercase shadow bg-red-500 hover:bg-green-900 focus:shadow-outline focus:outline-none text-white text-xs px-3 py-2 rounded-3xl" data-id="<?php echo $eventsArr['eventID']; ?>">REGISTER</button>
                             <?php
                             }
                             ?>
@@ -241,53 +241,54 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
         $(document).ready(function() {
 
             $('.bookmarko').click(function() {
-                var jobID = $(this).data('id');
-                $job = $(this);
+                var eventID = $(this).data('id');
+                $event = $(this);
                 $.ajax({
                     url: 'backend/bookmark.php',
                     type: 'post',
                     data: {
-                        'bookmarkJob': 1,
-                        'jobID': jobID
+                        'bookmarkEvent': 1,
+                        'eventID': eventID
                     },
                     success: function(res) {
                         console.log(res);
-                        $job.addClass('hidden');
-                        $job.siblings().removeClass('hidden');
+                        $event.addClass('hidden');
+                        $event.siblings().removeClass('hidden');
                     }
                 });
             });
 
             $('.bookmark').click(function() {
-                var jobID = $(this).data('id');
-                $job = $(this);
+                var eventID = $(this).data('id');
+                $event = $(this);
                 $.ajax({
                     url: 'backend/bookmark.php',
                     type: 'post',
                     data: {
-                        'bookmarkJob': 1,
-                        'jobID': jobID
+                        'unbookmarkEvent': 1,
+                        'eventID': eventID
                     },
                     success: function(res) {
-                        $job.addClass('hidden');
-                        $job.siblings().removeClass('hidden');
+                        $event.addClass('hidden');
+                        $event.siblings().removeClass('hidden');
                     }
                 });
             });
 
-            $('.apply').click(function() {
-                var jobID = $(this).data('id');
-                $job = $(this);
+            $('.register').click(function() {
+                var eventID = $(this).data('id');
+                $event = $(this);
                 $.ajax({
                     url: 'backend/bookmark.php',
                     type: 'post',
                     data: {
-                        'applyForJob': 1,
-                        'jobID': jobID
+                        'registerForEvent': 1,
+                        'eventID': eventID
                     },
                     success: function(res) {
-                        $job.addClass('hidden');
-                        $job.siblings().removeClass('hidden');
+                        console.log(res);
+                        $event.addClass('hidden');
+                        $event.siblings().removeClass('hidden');
                     }
                 });
             });

@@ -265,7 +265,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                     url: 'backend/bookmark.php',
                     type: 'post',
                     data: {
-                        'bookmarkJob': 1,
+                        'unbookmarkJob': 1,
                         'jobID': jobID
                     },
                     success: function(res) {

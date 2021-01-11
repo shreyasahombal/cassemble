@@ -43,12 +43,33 @@ if (isset($_POST['bookmark'])) {
     }
 
     echo 'hi';
+} else if (isset($_POST['bookmarkEvent'])) {
+    $eventID = $_POST['eventID'];
+    $idString = 'ID';
+    $idColumn = $userType . $idString;
+
+    $result = mysqli_query($conn, "INSERT INTO bookmarks ($idColumn, eventID) VALUES ($userID, $eventID)");
+    if (!$result) {
+        echo mysqli_error($conn);
+    }
+
+    echo 'hi';
 } else if (isset($_POST['unbookmarkJob'])) {
     $jobID = $_POST['jobID'];
     $idString = 'ID';
     $idColumn = $userType . $idString;
 
     $result = mysqli_query($conn, "DELETE FROM bookmarks WHERE jobID = $jobID AND $idColumn = $userID ;");
+    if (!$result) {
+        echo mysqli_error($conn);
+    }
+    echo 'bye';
+} else if (isset($_POST['unbookmarkEvent'])) {
+    $eventID = $_POST['eventID'];
+    $idString = 'ID';
+    $idColumn = $userType . $idString;
+
+    $result = mysqli_query($conn, "DELETE FROM bookmarks WHERE eventID = $eventID AND $idColumn = $userID ;");
     if (!$result) {
         echo mysqli_error($conn);
     }
@@ -75,6 +96,14 @@ if (isset($_POST['bookmark'])) {
         echo mysqli_error($conn);
     }
     echo 'applyForJob';
+} else if (isset($_POST['registerForEvent'])) {
+    $eventID = $_POST['eventID'];
+
+    $result = mysqli_query($conn, "INSERT INTO eventsandstudent (studentID, eventID) VALUES ($userID, $eventID);");
+    if (!$result) {
+        echo mysqli_error($conn);
+    }
+    echo 'registerForEvent';
 } else if (isset($_POST['bookmarked'])) {
     $slateID = $_POST['slateID'];
     $idString = 'ID';
