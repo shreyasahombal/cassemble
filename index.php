@@ -52,7 +52,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
             <div class="md:flex flex-col md:flex-row md:-mx-4 hidden">
                 <a href="jobs.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Jobs</a>
                 <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Slates</a>
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Events</a>
+                <a href="events.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Events</a>
                 <?php
                 if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 ?>

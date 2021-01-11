@@ -73,7 +73,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 <div class="uppercase text-l font-bold text-center">
                     Create a Job
                 </div>
-                <form action="backend/addJob.bkd.php" method="job">
+                <form action="backend/addJob.bkd.php" method="POST">
                     <input type="hidden" name="companyID" value="<?php echo htmlspecialchars($companyID); ?>">
                     <label for="title" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Title</label>
                     <input id="title" type="text" name="title" placeholder="Lead Android Developer" autocomplete="title" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
@@ -107,7 +107,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                             <p class=" text-black font-light text-sm"><?= $companyArr['name'] ?> . <?= $companyArr['headquarters'] ?></p>
                         </div>
                         <?php
-                        $jobjobedTime;
+                        $jobPostedTime;
                         date_default_timezone_set('Asia/Kolkata');
                         $time_ago = strtotime($jobsArr['createdAt']);
                         $current_time = time();
@@ -120,48 +120,48 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                         $months = round($seconds / 2629440);
                         $years = round($seconds / 31553280);
                         if ($seconds <= 60) {
-                            $jobjobedTime = "NOW";
+                            $jobPostedTime = "NOW";
                         } else if ($minutes <= 60) {
                             if ($minutes == 1) {
-                                $jobjobedTime = "1 min";
+                                $jobPostedTime = "1 min";
                             } else {
-                                $jobjobedTime = "$minutes mins";
+                                $jobPostedTime = "$minutes mins";
                             }
                         } else if ($hours <= 24) {
                             if ($hours == 1) {
-                                $jobjobedTime = "1 hr";
+                                $jobPostedTime = "1 hr";
                             } else {
-                                $jobjobedTime = "$hours hrs";
+                                $jobPostedTime = "$hours hrs";
                             }
                         } else if ($days <= 7) {
                             if ($days == 1) {
-                                $jobjobedTime = "yesterday";
+                                $jobPostedTime = "yesterday";
                             } else {
-                                $jobjobedTime = "$days d";
+                                $jobPostedTime = "$days d";
                             }
                         } else if ($weeks <= 4.3) //4.3 == 52/12  
                         {
                             if ($weeks == 1) {
-                                $jobjobedTime = "1 w";
+                                $jobPostedTime = "1 w";
                             } else {
-                                $jobjobedTime = "$weeks w";
+                                $jobPostedTime = "$weeks w";
                             }
                         } else if ($months <= 12) {
                             if ($months == 1) {
-                                $jobjobedTime = "1 m";
+                                $jobPostedTime = "1 m";
                             } else {
-                                $jobjobedTime = "$months m";
+                                $jobPostedTime = "$months m";
                             }
                         } else {
                             if ($years == 1) {
-                                $jobjobedTime = "1 y";
+                                $jobPostedTime = "1 y";
                             } else {
-                                $jobjobedTime = "$years y";
+                                $jobPostedTime = "$years y";
                             }
                         }
                         ?>
                         <div class="pt-5 mr-2 ml-auto">
-                            <p class="mb-5 text-black font-light text-xs"><?= $jobjobedTime ?></p>
+                            <p class="mb-5 text-black font-light text-xs"><?= $jobPostedTime ?></p>
                         </div>
 
                         <div>
