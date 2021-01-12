@@ -66,46 +66,22 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
         </div>
     </nav>
     <?php
-    if (isset($_GET['streamID']) && !isset($_GET['collegeID'])) {
-        $streamID = (int)$_GET['streamID'];
-
-        $studentsQuery = mysqli_query($conn, "SELECT student.studentID, student.imageURL, college.logoURL, student.name as studentName, stream.name as streamName, student.collegeID, college.name as collegeName, city.cityID, city.name as cityName, state.stateID, state.name as stateName, student.streamYear FROM student, stream, college, state, city WHERE student.streamID = '" . $streamID . "' AND stream.streamID = student.streamID AND college.collegeID = student.collegeID AND city.cityID = college.cityID AND state.stateID = college.stateID;");
-
-        while ($studentsArr = mysqli_fetch_array($studentsQuery)) {
-    ?>
-            <h1 class="my-10 text-center text-black font-black text-2xl"><?= $studentsArr['streamName'] ?> Students</h1>
-            <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
-                <div class="flex flex-row justify-evenly">
-                    <div>
-                    <a href="student.php?studentID=<?= $studentsArr['studentID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['imageURL'] ?>" /></a>
-
-                    </div>
-                    <div class="mt-3 mx-5 text-center">
-                        <p class=" text-black font-bold"><?= $studentsArr['studentName'] ?></p>
-                        <p class=" text-black font-light text-xs"><a href="studentsList.php?streamYear=<?= $studentsArr['streamYear'] ?>" target="_blank"><?= $studentsArr['streamYear'] ?></a> . <a href="studentsList.php?collegeID=<?= $studentsArr['collegeID'] ?>&streamID=<?= $streamID ?>" target="_blank"><?= $studentsArr['collegeName'] ?></a> . <a href="studentsList.php?cityID=<?= $studentsArr['cityID'] ?>" target="_blank"><?= $studentsArr['cityName'] ?></a> . <a href="studentsList.php?stateID=<?= $studentsArr['stateID'] ?>" target="_blank"><?= $studentsArr['stateName'] ?></a></p>
-                    </div>
-                    <div>
-                    <a href="college.php?collegeID=<?= $studentsArr['collegeID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['logoURL'] ?>" /></a>
-
-                    </div>
-                </div>
-            </div>
-    <?php
-        }
-    } else if (isset($_GET['streamID']) && isset($_GET['collegeID'])) {
+    if (isset($_GET['streamID']) && isset($_GET['collegeID'])) {
         $streamID = (int)$_GET['streamID'];
         $collegeID = (int)$_GET['collegeID'];
+    ?>
+        <h1 class="my-10 text-center text-black font-black text-xl"><?= $studentsArr['streamName'] ?> Students from <?= $studentsArr['collegeName'] ?></h1>
+        <?php
+
 
         $studentsQuery = mysqli_query($conn, "SELECT student.studentID, student.imageURL, college.logoURL, student.name as studentName, stream.name as streamName, student.collegeID, college.name as collegeName, city.cityID, city.name as cityName, state.stateID, state.name as stateName, student.streamYear FROM student, stream, college, state, city WHERE student.streamID = '" . $streamID . "' AND stream.streamID = student.streamID AND college.collegeID = student.collegeID AND city.cityID = college.cityID AND state.stateID = college.stateID;");
 
         while ($studentsArr = mysqli_fetch_array($studentsQuery)) {
-            ?>
-            
-            <h1 class="my-10 text-center text-black font-black text-xl"><?= $studentsArr['streamName'] ?> Students from <?= $studentsArr['collegeName'] ?></h1>
+        ?>
             <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
                 <div class="flex flex-row justify-evenly">
                     <div>
-                    <a href="student.php?studentID=<?= $studentsArr['studentID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['imageURL'] ?>" /></a>
+                        <a href="student.php?studentID=<?= $studentsArr['studentID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['imageURL'] ?>" /></a>
 
                     </div>
                     <div class="mt-3 mx-5 text-center">
@@ -117,13 +93,131 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                     </div>
                 </div>
             </div>
-            <?php
+        <?php
+        }
+    } else if (isset($_GET['streamID'])) {
+        $streamID = (int)$_GET['streamID'];
+
+        $studentsQuery = mysqli_query($conn, "SELECT student.studentID, student.imageURL, college.logoURL, student.name as studentName, stream.name as streamName, student.collegeID, college.name as collegeName, city.cityID, city.name as cityName, state.stateID, state.name as stateName, student.streamYear FROM student, stream, college, state, city WHERE student.streamID = '" . $streamID . "' AND stream.streamID = student.streamID AND college.collegeID = student.collegeID AND city.cityID = college.cityID AND state.stateID = college.stateID;");
+
+        while ($studentsArr = mysqli_fetch_array($studentsQuery)) {
+        ?>
+            <h1 class="my-10 text-center text-black font-black text-2xl"><?= $studentsArr['streamName'] ?> Students</h1>
+            <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
+                <div class="flex flex-row justify-evenly">
+                    <div>
+                        <a href="student.php?studentID=<?= $studentsArr['studentID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['imageURL'] ?>" /></a>
+
+                    </div>
+                    <div class="mt-3 mx-5 text-center">
+                        <p class=" text-black font-bold"><?= $studentsArr['studentName'] ?></p>
+                        <p class=" text-black font-light text-xs"><a href="studentsList.php?streamYear=<?= $studentsArr['streamYear'] ?>" target="_blank"><?= $studentsArr['streamYear'] ?></a> . <a href="studentsList.php?collegeID=<?= $studentsArr['collegeID'] ?>&streamID=<?= $streamID ?>" target="_blank"><?= $studentsArr['collegeName'] ?></a> . <a href="studentsList.php?cityID=<?= $studentsArr['cityID'] ?>" target="_blank"><?= $studentsArr['cityName'] ?></a> . <a href="studentsList.php?stateID=<?= $studentsArr['stateID'] ?>" target="_blank"><?= $studentsArr['stateName'] ?></a></p>
+                    </div>
+                    <div>
+                        <a href="college.php?collegeID=<?= $studentsArr['collegeID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['logoURL'] ?>" /></a>
+
+                    </div>
+                </div>
+            </div>
+
+        <?php
         }
     } else if (isset($_GET['streamYear']) && isset($_GET['collegeID'])) {
         $streamYear = $_GET['streamYear'];
         $collegeID = (int)$_GET['collegeID'];
+
+        $studentsQuery = mysqli_query($conn, "SELECT student.studentID, student.imageURL, college.logoURL, student.name as studentName, stream.name as streamName, student.collegeID, college.name as collegeName, city.cityID, city.name as cityName, state.stateID, state.name as stateName, student.streamYear FROM student, stream, college, state, city WHERE student.streamYear = '" . $streamYear . "' AND stream.streamID = student.streamID AND college.collegeID = student.collegeID AND city.cityID = college.cityID AND state.stateID = college.stateID;");
+
+        while ($studentsArr = mysqli_fetch_array($studentsQuery)) {
+        ?>
+            <h1 class="my-10 text-center text-black font-black text-2xl"><?= $streamYear ?> Year Students</h1>
+            <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
+                <div class="flex flex-row justify-evenly">
+                    <div>
+                        <a href="student.php?studentID=<?= $studentsArr['studentID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['imageURL'] ?>" /></a>
+
+                    </div>
+                    <div class="mt-3 mx-5 text-center">
+                        <p class=" text-black font-bold"><?= $studentsArr['studentName'] ?></p>
+                        <p class=" text-black font-light text-xs"><a href="studentsList.php?streamYear=<?= $studentsArr['streamYear'] ?>" target="_blank"><?= $studentsArr['streamYear'] ?></a> . <a href="studentsList.php?collegeID=<?= $studentsArr['collegeID'] ?>&streamID=<?= $streamID ?>" target="_blank"><?= $studentsArr['collegeName'] ?></a> . <a href="studentsList.php?cityID=<?= $studentsArr['cityID'] ?>" target="_blank"><?= $studentsArr['cityName'] ?></a> . <a href="studentsList.php?stateID=<?= $studentsArr['stateID'] ?>" target="_blank"><?= $studentsArr['stateName'] ?></a></p>
+                    </div>
+                    <div>
+                        <a href="college.php?collegeID=<?= $studentsArr['collegeID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['logoURL'] ?>" /></a>
+
+                    </div>
+                </div>
+            </div>
+
+        <?php
+        }
     } else if (isset($_GET['cityID'])) {
         $cityID = (int)$_GET['cityID'];
+
+        $studentsQuery = mysqli_query($conn, "SELECT student.studentID, student.imageURL, college.logoURL, student.name as studentName, stream.name as streamName, student.collegeID, college.name as collegeName, city.cityID, city.name as cityName, state.stateID, state.name as stateName, student.streamYear FROM student, stream, college, state, city WHERE city.cityID = $cityID AND college.collegeID = student.collegeID AND city.cityID = college.cityID AND state.stateID = college.stateID;");
+
+        while ($studentsArr = mysqli_fetch_array($studentsQuery)) {
+        ?>
+            <h1 class="my-10 text-center text-black font-black text-2xl"><?= $studentsArr['cityName'] ?> Students</h1>
+            <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
+                <div class="flex flex-row justify-evenly">
+                    <div>
+                        <a href="student.php?studentID=<?= $studentsArr['studentID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['imageURL'] ?>" /></a>
+
+                    </div>
+                    <div class="mt-3 mx-5 text-center">
+                        <p class=" text-black font-bold"><?= $studentsArr['studentName'] ?></p>
+                        <p class=" text-black font-light text-xs"><a href="studentsList.php?streamYear=<?= $studentsArr['streamYear'] ?>" target="_blank"><?= $studentsArr['streamYear'] ?></a> . <a href="studentsList.php?collegeID=<?= $studentsArr['collegeID'] ?>&streamID=<?= $streamID ?>" target="_blank"><?= $studentsArr['collegeName'] ?></a> . <a href="studentsList.php?cityID=<?= $studentsArr['cityID'] ?>" target="_blank"><?= $studentsArr['cityName'] ?></a> . <a href="studentsList.php?stateID=<?= $studentsArr['stateID'] ?>" target="_blank"><?= $studentsArr['stateName'] ?></a></p>
+                    </div>
+                    <div>
+                        <a href="college.php?collegeID=<?= $studentsArr['collegeID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsArr['logoURL'] ?>" /></a>
+
+                    </div>
+                </div>
+            </div>
+
+            <?php
+        }
+    } else if (isset($_GET['skillID']) && isset($_GET['skillName'])) {
+        $skillID = (int)$_GET['skillID'];
+        $skillName = $_GET['skillName'];
+        $count = 0;
+        $printcount = 0;
+
+        $studentandskillQuery = mysqli_query($conn, "SELECT studentID FROM studentandskill WHERE studentandskill.skillID = '" . $skillID . "' ;");
+
+        while ($studentandskillArr = mysqli_fetch_array($studentandskillQuery)) {
+
+            // $studentsSkillsQuery = mysqli_query($conn, "SELECT student.studentID, student.imageURL, college.logoURL, student.name as studentName, stream.name as streamName, student.collegeID, college.name as collegeName, city.cityID, city.name as cityName, state.stateID, state.name as stateName, student.streamYear FROM student, stream, college, state, city WHERE student.studentID = '".$studentandskillArr['studentID']."' AND college.collegeID = student.collegeID AND city.cityID = college.cityID AND state.stateID = college.stateID;");
+
+            $studentsQuery = mysqli_query($conn, "SELECT student.name as studentName, student.imageURL, college.logoURL, college.name as collegeName, city.name as cityName, state.name as stateName, student.streamYear, stream.name as streamName FROM student, college, city, state, stream WHERE student.studentID = '".$studentandskillArr['studentID']."' AND college.collegeID = student.collegeID AND city.cityID = college.cityID AND state.stateID = college.stateID AND stream.streamID = student.streamID ;");
+            while ($studentsSkillsArr = mysqli_fetch_array($studentsQuery)) {
+                if ($count == 0) {
+            ?>
+                    <h1 class="my-10 text-center text-black font-black text-2xl"><?= $skillName ?> Students</h1>
+                <?php
+                    $count++;
+                }
+                echo $printcount++;
+                ?>
+
+                <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
+                    <div class="flex flex-row justify-evenly">
+                        <div>
+                            <a href="student.php?studentID=<?= $studentsSkillsArr['studentID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsSkillsArr['imageURL'] ?>" /></a>
+                        </div>
+                        <div class="mt-3 mx-5 text-center">
+                            <p class=" text-black font-bold"><?= $studentsSkillsArr['studentName'] ?></p>
+                            <p class=" text-black font-light text-xs"><a href="studentsList.php?streamYear=<?= $studentsSkillsArr['streamYear'] ?>" target="_blank"><?= $studentsSkillsArr['streamYear'] ?></a> . <a href="studentsList.php?collegeID=<?= $studentsSkillsArr['collegeID'] ?>&streamID=<?= $streamID ?>" target="_blank"><?= $studentsSkillsArr['collegeName'] ?></a> . <a href="studentsList.php?cityID=<?= $studentsSkillsArr['cityID'] ?>" target="_blank"><?= $studentsSkillsArr['cityName'] ?></a> . <a href="studentsList.php?stateID=<?= $studentsSkillsArr['stateID'] ?>" target="_blank"><?= $studentsSkillsArr['stateName'] ?></a></p>
+                        </div>
+                        <div>
+                            <a href="college.php?collegeID=<?= $studentsSkillsArr['collegeID'] ?>" target="_blank"><img class="rounded-full h-14 w-14" src="<?= $studentsSkillsArr['logoURL'] ?>" /></a>
+
+                        </div>
+                    </div>
+                </div>
+    <?php
+            }
+        }
     }
     ?>
 </body>
