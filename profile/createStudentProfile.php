@@ -23,6 +23,8 @@ if (!mysqli_stmt_prepare($stmt, $sql)) { //checking if connection is perfect
 <!DOCTYPE html>
 <html lang="en">
 
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +34,37 @@ if (!mysqli_stmt_prepare($stmt, $sql)) { //checking if connection is perfect
     <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
     <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet" />
 </head>
+
+
+
+
+
+<!-- <style>
+
+I wanted to a text to appear when someone hovers over disabled option alumni
+.display {
+  display: none;
+}
+    
+.alumni:hover + .display {
+  display: block;
+  color: red;
+}
+</style>
+
+following is the code which i tried but didn't work
+
+<div class="alumini">
+     <option value="ALUMNI" disabled >Alumni</option>
+</div>
+<div class="display">
+    You are an alumni when you are a former student of that particular college.
+</div>
+
+ -->
+
+
+
 
 <body>
     <div class="grid min-h-screen place-items-center">
@@ -72,7 +105,9 @@ if (!mysqli_stmt_prepare($stmt, $sql)) { //checking if connection is perfect
                     <option value="2nd">2nd Year</option>
                     <option value="3rd">3rd Year</option>
                     <option value="4th">4th Year</option>
-                    <option value="ALUMNI">Alumni</option>
+                    <option value="ALUMNI" disabled >Alumni</option>
+                    
+                    
                 </select>
                 </label>
                 <label for="skills" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">skills</label>
