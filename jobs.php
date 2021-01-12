@@ -50,9 +50,8 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 </div>
             </div>
             <div class="md:flex flex-col md:flex-row md:-mx-4 hidden">
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Jobs</a>
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">jobs</a>
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Events</a>
+                <a href="index.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0 uppercase">SLATES</a>
+                <a href="events.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0 uppercase">Events</a>
                 <?php
                 if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                 ?>
@@ -170,9 +169,9 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                                 <ul class="slateMenu absolute hidden text-gray-700 pt-1">
                                     <?php
                                     if ($jobsArr['companyID'] == $userID) { ?>
-                                        <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Share</a></li>
-                                        <li class="editSlateButton rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">Edit</li>
-                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="backend/deleteSlate.php?jobID=<?php echo $jobsArr['jobID']; ?>">Delete</a></li>
+                                        <li class=""><a onclick="copyToClipboard" class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="https://wa.me/?text=https://localhost/cassemble/job.php?jobID=<?php echo $jobsArr['jobID']?>">Share</a></li>
+                                        <li class=""><a class=" bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="applicants.php?jobID=<?php echo $jobsArr['jobID']?>">See Applicants</a></li>
+                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="backend/deleteJob.php?jobID=<?php echo $jobsArr['jobID']?>">Delete</a></li>
                                     <?php
                                     } else {
                                     ?>
@@ -190,7 +189,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                             }
                         </style>
                     </div>
-                    <div class="jobContent h-56 overflow-auto my-5 mx-5 font-normal text-justify"><?= nl2br($jobsArr['content']) ?></div>
+                    <div class="jobContent overflow-auto my-5 mx-5 font-normal text-justify"><?= nl2br($jobsArr['content']) ?></div>
                     <?php
                     if ($userType == 'student') {
                     ?>

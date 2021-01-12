@@ -170,9 +170,9 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
                                 <ul class="slateMenu absolute hidden text-gray-700 pt-1">
                                     <?php
                                     if ($eventsArr['collegeID'] == $userID) { ?>
-                                        <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Share</a></li>
-                                        <li class="editSlateButton rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">Edit</li>
-                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="backend/deleteSlate.php?eventID=<?php echo $eventsArr['eventID']; ?>">Delete</a></li>
+                                        <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="https://wa.me/?text=https://localhost/cassemble/event.php?eventID=<?php echo $eventsArr['eventID']?>">Share</a></li>
+                                        <li class=""><a class=" bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="registrations.php?eventID=<?php echo $eventsArr['eventID']?>">See Registrations</a></li>
+                                        <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="backend/deleteEvent.php?eventID=<?php echo $eventsArr['eventID']; ?>">Delete</a></li>
                                     <?php
                                     } else {
                                     ?>
