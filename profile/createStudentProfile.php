@@ -92,6 +92,11 @@ if (!mysqli_stmt_prepare($stmt, $sql)) { //checking if connection is perfect
                 <input id="githubURL" type="url" name="githubURL" placeholder="www.github.com/" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
                 <label for="imageURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Profile Image URL</label>
                 <input id="imageURL" type="url" name="imageURL" placeholder="http://" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+                <!-- <form action="uploadProfilePic.php" method="post" enctype="multipart/form-data">
+                Select image to upload:
+               <input type="file" name="fileToUpload" id="fileToUpload" required>
+               <input type="submit" value="Upload Image" name="submit" required>
+               </form> -->
                 <label for="resumeURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Resume URL</label>
                 <input id="resumeURL" type="url" name="resumeURL" placeholder="http://" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
                 <label for="twitterURL" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Resume URL</label>
