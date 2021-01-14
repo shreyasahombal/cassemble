@@ -33,45 +33,91 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
 </head>
 
 <body>
-    <!-- <div class="text-center font-black text-3xl">cassemble</div> -->
-    <nav class="sticky bg-white px-6 py-4 shadow">
-        <div class="flex flex-col container mx-auto md:flex-row md:items-center md:justify-between">
-            <div class="flex justify-between items-center">
-                <div>
-                    <a href="#" class="text-gray-800 text-xl font-black md:text-2xl">cassemble</a>
-                </div>
-                <div>
-                    <button type="button" class="block text-gray-800 hover:text-gray-600 focus:text-gray-600 focus:outline-none md:hidden">
-                        <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
-                            <path d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z">
-                            </path>
+    <nav class="bg-gray-800">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="relative flex items-center justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
-            </div>
-            <div class="md:flex flex-col md:flex-row md:-mx-4 hidden">
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Jobs</a>
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Slates</a>
-                <a href="#" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Events</a>
-                <?php
-                if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
-                ?>
-                    <a href="profile/myProfile.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Profile</a>
-                    <a href="backend/signout.bkd.php" class="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0">Sign Out</a>
-                <?php
-                }
-                ?>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="flex-shrink-0 flex items-center">
+                        <p class="mt-1 text-white font-black text-2xl">cassemble</p>
+                    </div>
+                    <div class="mt-1 hidden sm:block sm:ml-6">
+                        <div class="flex space-x-4">
+                            <a href="index.php" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium uppercase">slates</a>
+                            <a href="jobs.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium uppercase">jobs</a>
+                            <a href="events.php" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium uppercase">events</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <?php
+                    if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
+                        $idString = 'ID';
+                        $idColumn = $userType . $idString;
+                        echo $userTypeID;
+                        $userQuery = mysqli_query($conn, "SELECT * FROM $userType WHERE $idColumn = $userID");
+                        if (!$userQuery) {
+                            $result = mysqli_error($userQuery);
+                            header('Location: index.php?error=' . $result);
+                            exit();
+                        }
+                        while ($userArr = mysqli_fetch_array($userQuery)) {
+                    ?>
+                            <div class="ml-3 relative">
+                                <div>
+                                    <button class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-haspopup="true">
+                                        <span class="sr-only">Open user menu</span>
+                                        <a href="profile/myProfile.php"><img class="h-8 w-8 rounded-full" src="<?= $userArr['imageURL'] ?>" alt=""></a>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ml-3 relative">
+                                <div>
+                                    <button class="ml-3 bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-haspopup="true">
+                                        <span class="sr-only">Open user menu</span>
+                                        <a href="backend/signout.bkd.php"><img class="h-5 w-5 " src="public/icons/log-out.svg" alt=""></a>
+                                    </button>
+                                </div>
+                            </div>
 
+                        <?php
+
+                        }
+                        ?>
+                    <?php
+                    } else {
+                    ?>
+
+                    <?php
+                    }
+                    ?>
+
+                </div>
             </div>
-        </div>
+            <div class="hidden sm:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Slates</a>
+                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Jobs</a>
+                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Events</a>
+                </div>
+            </div>
     </nav>
     <?php
     if (isset($_GET['streamID']) && isset($_GET['collegeID'])) {
         $streamID = (int)$_GET['streamID'];
         $collegeID = (int)$_GET['collegeID'];
-    ?>
-        <h1 class="my-10 text-center text-black font-black text-xl"><?= $studentsArr['streamName'] ?> Students from <?= $studentsArr['collegeName'] ?></h1>
-        <?php
 
 
         $studentsQuery = mysqli_query($conn, "SELECT student.studentID, student.imageURL, college.logoURL, student.name as studentName, stream.name as streamName, student.collegeID, college.name as collegeName, city.cityID, city.name as cityName, state.stateID, state.name as stateName, student.streamYear FROM student, stream, college, state, city WHERE student.streamID = '" . $streamID . "' AND stream.streamID = student.streamID AND college.collegeID = student.collegeID AND city.cityID = college.cityID AND state.stateID = college.stateID;");
@@ -157,7 +203,7 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
 
         while ($studentsArr = mysqli_fetch_array($studentsQuery)) {
         ?>
-            <h1 class="my-10 text-center text-black font-black text-2xl"><?= $studentsArr['cityName'] ?> Students</h1>
+            <!-- <h1 class="my-10 text-center text-black font-black text-2xl"><?= $studentsArr['cityName'] ?> Students</h1> -->
             <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
                 <div class="flex flex-row justify-evenly">
                     <div>

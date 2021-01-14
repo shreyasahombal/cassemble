@@ -71,17 +71,17 @@ if (isset($_SESSION['signedIn']) && $_SESSION['signedIn'] == true) {
         if (isset($_GET['studentID'])) {
             $studentID = (int)$_GET['studentID'];
 
-            $slatesQuery = mysqli_query($conn, "SELECT * FROM slate WHERE slate.studentID = '".$studentID."' ORDER BY createdAt DESC");
+            $slatesQuery = mysqli_query($conn, "SELECT * FROM slate WHERE slate.studentID = '" . $studentID . "' ORDER BY createdAt DESC");
 
             while ($slatesArr = mysqli_fetch_array($slatesQuery)) {
                 $slateID = $slatesArr['slateID'];
 
-                    $creatorID = $slatesArr['studentID'];
-                    $creatorType = 'student';
-                    $creatorQuery = mysqli_query($conn, "SELECT student.name as creatorName, student.imageURL as creatorImage, student.streamYear, college.name as collegeName, college.collegeID, stream.acronym, city.cityID, stream.streamID, city.name as cityName FROM student, college, stream, city WHERE student.studentID = " . $slatesArr['studentID'] . " AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
+                $creatorID = $slatesArr['studentID'];
+                $creatorType = 'student';
+                $creatorQuery = mysqli_query($conn, "SELECT student.name as creatorName, student.imageURL as creatorImage, student.streamYear, college.name as collegeName, college.collegeID, stream.acronym, city.cityID, stream.streamID, city.name as cityName FROM student, college, stream, city WHERE student.studentID = " . $slatesArr['studentID'] . " AND college.collegeID = student.collegeID AND stream.streamID = student.streamID AND college.cityID = city.cityID");
 
                 while ($creatorArr = mysqli_fetch_array($creatorQuery)) {
-            ?>
+    ?>
                     <div class="max-w-xl my-5 mx-auto px-4 py-4 bg-white shadow-md rounded-lg">
                         <div class="flex flex-row items-center">
                             <a href="<?= $creatorType ?>.php?<?= $creatorType ?>ID=<?= $creatorID ?>" target="_blank"><img class="rounded-full h-10 w-10" src="<?= $creatorArr['creatorImage'] ?>" /></a>
